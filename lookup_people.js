@@ -14,10 +14,11 @@ const client = new pg.Client({
 
 client.connect();
 
-client.query("SELECT * FROM famous_people WHERE first_name = $1::text ", [name], (err, result) => {
+client.query("SELECT * FROM famous_people WHERE (first_name like $1::text) OR (last_name like $1::text) ", [name], (err, result) => {
     if (err) {
       return console.error("error running query", err);
     }
+    console.log(`${result.rows.length}`)
     console.log(result.rows);
     client.end();
   });
